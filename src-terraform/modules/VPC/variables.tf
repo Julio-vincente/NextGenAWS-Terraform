@@ -1,83 +1,148 @@
-## VPC PRODUCTION
-variable "vpc_prod_name" {
-  type = string
-  default = "Production"
+## AVAILABILITY ZONES
+variable "us-east-1a" {
+  type    = string
+  default = "us-east-1a"
 }
 
-variable "vpc_prod_cidr" {
-  type = string
+variable "us-east-1b" {
+  type    = string
+  default = "us-east-1b"
+}
+
+## VPC EKS AZ1
+variable "vpc_eks_az1_name" {
+  type    = string
+  default = "VPC_EKS_AZ1"
+}
+
+variable "vpc_eks_az1_cidr" {
+  type    = string
   default = "192.168.0.0/16"
 }
 
-## ZONES
-variable "Zone1a" {
-    type = string
-    default = "us-east-1a"
+## SUBNET EKS PUBLIC/PRIVATE
+variable "eks_subnet_public_cidr" {
+  type    = string
+  default = "192.168.10.0/24"
 }
 
-variable "Zone1b" {
-    type = string
-    default = "us-east-1b"
+variable "eks_subnet_private_cidr" {
+  type    = string
+  default = "192.168.20.0/24"
 }
 
-## SUBNET PUBLIC 1A
-variable "name_prod_pub1a" {
-    type = string
-    default = "Production_Public_1a"  
+variable "eks_subnet_public_name" {
+  type    = string
+  default = "EKS_SUBNET_PUBLIC"
 }
 
-variable "cidr_prod_pub1a" {
-    type = string
-    default = "192.168.10.0/24"  
+variable "eks_subnet_private_name" {
+  type    = string
+  default = "EKS_SUBNET_PRIVATE"
 }
 
-## SUBNET PUBLIC 1B
-variable "name_prod_pub1b" {
-    type = string
-    default = "Production_Public_1b"  
+## IGW EKS
+variable "eks_igw_name" {
+  type    = string
+  default = "IGW_EKS"
 }
 
-variable "cidr_prod_pub1b" {
-    type = string
-    default = "192.168.20.0/24"  
+## NATGW EKS
+variable "eks_natgw_name" {
+  type    = string
+  default = "NATGW_EKS"
 }
 
-## SUBNET PRIVATE 1A
-variable "name_prod_priv1a" {
-    type = string
-    default = "Production_Private_1a"  
+## EKS ROUTE TABLE
+variable "rt_public_eks_name" {
+  type    = string
+  default = "RT_PUBLIC_EKS"
 }
 
-variable "cidr_prod_priv1a" {
-    type = string
-    default = "192.168.30.0/24"  
+variable "rt_private_eks_name" {
+  type    = string
+  default = "RT_PRIVATE_EKS"
 }
 
-## SUBNET PRIVATE 1B
-variable "name_prod_priv1b" {
-    type = string
-    default = "Production_Private_1b"  
+## VPC NODES AZ1
+variable "vpc_nodes_az1_name" {
+  type    = string
+  default = "VPC_NODES_AZ1"
 }
 
-variable "cidr_prod_priv1b" {
-    type = string
-    default = "192.168.40.0/24"  
+variable "vpc_nodes_az1_cidr" {
+  type    = string
+  default = "172.16.0.0/16"
 }
 
-## IGW PROD
-variable "name_igw_prod" {
-    type = string
-    default = "igw-prod"
+## SUBNET NODES PUBLIC/PRIVATE
+variable "nodes_subnet_public_cidr" {
+  type    = string
+  default = "172.16.10.0/24"
 }
 
-## NATGW PROD
-variable "name_natgw_prod" {
-    type = string
-    default = "natgw-prod"
+variable "nodes_subnet_private_cidr" {
+  type    = string
+  default = "172.16.20.0/24"
 }
 
-## ROUTE TABLE PUBLIC PROD
-variable "name_route_table_public_prod" {
-    type = string
-    default = "rt-public-prod"
+variable "nodes_subnet_public_name" {
+  type    = string
+  default = "NODES_SUBNET_PUBLIC"
+}
+
+variable "nodes_subnet_private_name" {
+  type    = string
+  default = "NODES_SUBNET_PRIVATE"
+}
+
+## IGW NODES
+variable "nodes_igw_name" {
+  type    = string
+  default = "IGW_NODES"
+}
+
+## NATGW NODES
+variable "nodes_natgw_name" {
+  type    = string
+  default = "NATGW_NODES"
+}
+
+## NODES ROUTE TABLE
+variable "rt_public_nodes_name" {
+  type    = string
+  default = "RT_PUBLIC_NODES"
+}
+
+variable "rt_private_nodes_name" {
+  type    = string
+  default = "RT_PRIVATE_NODES"
+}
+
+## SG NODES
+variable "sg_nodes_name" {
+  type    = string
+  default = "SG_NODES"
+}
+
+variable "sg_nodes_description" {
+  type    = string
+  default = "Permite HTTP e HTTPs para os nodes do eks"
+}
+
+## SG DB
+variable "sg_db_name" {
+  type    = string
+  default = "SG_DB"
+}
+
+variable "sg_db_description" {
+  type    = string
+  default = "Permite Mysql para o rds"
+}
+
+## VPC PEERING 
+variable "peering_name" {
+  type    = string
+  default = "PEERING_EKS-NODES"
 }
