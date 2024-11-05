@@ -9,23 +9,43 @@ resource "aws_vpc" "vpc_eks_az1" {
 }
 
 ## SUBNET EKS PUBLIC/PRIVATE
-resource "aws_subnet" "eks_subnet_public" {
+resource "aws_subnet" "eks_subnet_public1" {
   vpc_id                  = aws_vpc.vpc_eks_az1.id
-  cidr_block              = var.eks_subnet_public_cidr
+  cidr_block              = var.eks_subnet_public_cidr1
   availability_zone       = var.us-east-1a
   map_public_ip_on_launch = true
   tags = {
-    Name = var.eks_subnet_public_name
+    Name = var.eks_subnet_public_name1
   }
 }
 
-resource "aws_subnet" "eks_subnet_private" {
+resource "aws_subnet" "eks_subnet_public2" {
   vpc_id                  = aws_vpc.vpc_eks_az1.id
-  cidr_block              = var.eks_subnet_private_cidr
+  cidr_block              = var.eks_subnet_public_cidr2
   availability_zone       = var.us-east-1b
   map_public_ip_on_launch = true
   tags = {
-    Name = var.eks_subnet_private_name
+    Name = var.eks_subnet_public_name2
+  }
+}
+
+resource "aws_subnet" "eks_subnet_private1" {
+  vpc_id                  = aws_vpc.vpc_eks_az1.id
+  cidr_block              = var.eks_subnet_private_cidr1
+  availability_zone       = var.us-east-1b
+  map_public_ip_on_launch = true
+  tags = {
+    Name = var.eks_subnet_private_name1
+  }
+}
+
+resource "aws_subnet" "eks_subnet_private2" {
+  vpc_id                  = aws_vpc.vpc_eks_az1.id
+  cidr_block              = var.eks_subnet_private_cidr2
+  availability_zone       = var.us-east-1b
+  map_public_ip_on_launch = true
+  tags = {
+    Name = var.eks_subnet_private_name2
   }
 }
 
@@ -43,7 +63,7 @@ resource "aws_eip" "eip_eks" {}
 
 resource "aws_nat_gateway" "nat_gateway_eks" {
   allocation_id = aws_eip.eip_eks.id
-  subnet_id     = aws_subnet.eks_subnet_public.id
+  subnet_id     = aws_subnet.eks_subnet_public1.id
 
   tags = {
     Name = var.eks_natgw_name
@@ -96,23 +116,43 @@ resource "aws_vpc" "vpc_nodes_az1" {
 }
 
 ## SUBNET NODES PUBLIC/PRIVATE
-resource "aws_subnet" "nodes_subnet_public" {
+resource "aws_subnet" "nodes_subnet_public1" {
   vpc_id                  = aws_vpc.vpc_nodes_az1.id
-  cidr_block              = var.nodes_subnet_public_cidr
+  cidr_block              = var.nodes_subnet_public_cidr1
   availability_zone       = var.us-east-1a
   map_public_ip_on_launch = true
   tags = {
-    Name = var.nodes_subnet_public_name
+    Name = var.eks_subnet_public_name1
   }
 }
 
-resource "aws_subnet" "nodes_subnet_private" {
+resource "aws_subnet" "nodes_subnet_public2" {
   vpc_id                  = aws_vpc.vpc_nodes_az1.id
-  cidr_block              = var.nodes_subnet_private_cidr
+  cidr_block              = var.nodes_subnet_public_cidr2
+  availability_zone       = var.us-east-1a
+  map_public_ip_on_launch = true
+  tags = {
+    Name = var.eks_subnet_public_name2
+  }
+}
+
+resource "aws_subnet" "nodes_subnet_private1" {
+  vpc_id                  = aws_vpc.vpc_nodes_az1.id
+  cidr_block              = var.nodes_subnet_private_cidr1
   availability_zone       = var.us-east-1b
   map_public_ip_on_launch = true
   tags = {
-    Name = var.nodes_subnet_private_name
+    Name = var.eks_subnet_private_name1
+  }
+}
+
+resource "aws_subnet" "nodes_subnet_private2" {
+  vpc_id                  = aws_vpc.vpc_nodes_az1.id
+  cidr_block              = var.nodes_subnet_private_cidr2
+  availability_zone       = var.us-east-1b
+  map_public_ip_on_launch = true
+  tags = {
+    Name = var.eks_subnet_private_name2
   }
 }
 
@@ -130,7 +170,7 @@ resource "aws_eip" "eip_nodes" {}
 
 resource "aws_nat_gateway" "nat_gateway_nodes" {
   allocation_id = aws_eip.eip_nodes.id
-  subnet_id     = aws_subnet.nodes_subnet_public.id
+  subnet_id     = aws_subnet.nodes_subnet_public1.id
 
   tags = {
     Name = var.nodes_natgw_name

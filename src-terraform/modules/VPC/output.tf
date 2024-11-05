@@ -1,11 +1,11 @@
-output "public_subnet_id" {
-  description = "public eks subnet id"
-  value       = aws_subnet.eks_subnet_public.id
+output "public_subnet_ids" {
+  description = "public eks subnets ids"
+  value       = [aws_subnet.eks_subnet_public1.id, aws_subnet.eks_subnet_public2.id]
 }
 
 output "private_subnet_id" {
   description = "private eks subnet id"
-  value       = aws_subnet.eks_subnet_private.id
+  value       = [aws_subnet.eks_subnet_private1.id, aws_subnet.eks_subnet_private2.id]
 }
 
 output "sg_rds_id" {

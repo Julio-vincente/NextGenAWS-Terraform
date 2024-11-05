@@ -1,1 +1,6 @@
 .github/workflows/
+src-terraform/.terraform.lock.hcl
+src-terraform/.terraform.tfstate.lock.info
+src-terraform/terraform.tfstate.backup
+src-terraform/.terraform
+src-terraform/terraform.tfstate

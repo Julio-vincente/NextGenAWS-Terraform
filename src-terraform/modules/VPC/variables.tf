@@ -21,24 +21,44 @@ variable "vpc_eks_az1_cidr" {
 }
 
 ## SUBNET EKS PUBLIC/PRIVATE
-variable "eks_subnet_public_cidr" {
+variable "eks_subnet_public_cidr1" {
   type    = string
   default = "192.168.10.0/24"
 }
 
-variable "eks_subnet_private_cidr" {
+variable "eks_subnet_public_cidr2" {
   type    = string
   default = "192.168.20.0/24"
 }
 
-variable "eks_subnet_public_name" {
+variable "eks_subnet_private_cidr1" {
   type    = string
-  default = "EKS_SUBNET_PUBLIC"
+  default = "192.168.30.0/24"
 }
 
-variable "eks_subnet_private_name" {
+variable "eks_subnet_private_cidr2" {
   type    = string
-  default = "EKS_SUBNET_PRIVATE"
+  default = "192.168.40.0/24"
+}
+
+variable "eks_subnet_public_name1" {
+  type    = string
+  default = "EKS_SUBNET_PUBLIC1a"
+}
+
+variable "eks_subnet_public_name2" {
+  type    = string
+  default = "EKS_SUBNET_PUBLIC1b"
+}
+
+variable "eks_subnet_private_name1" {
+  type    = string
+  default = "EKS_SUBNET_PRIVATE1a"
+}
+
+variable "eks_subnet_private_name2" {
+  type    = string
+  default = "EKS_SUBNET_PRIVATE1b"
 }
 
 ## IGW EKS
@@ -76,24 +96,44 @@ variable "vpc_nodes_az1_cidr" {
 }
 
 ## SUBNET NODES PUBLIC/PRIVATE
-variable "nodes_subnet_public_cidr" {
+variable "nodes_subnet_public_cidr1" {
   type    = string
   default = "172.16.10.0/24"
 }
 
-variable "nodes_subnet_private_cidr" {
+variable "nodes_subnet_public_cidr2" {
   type    = string
   default = "172.16.20.0/24"
 }
 
-variable "nodes_subnet_public_name" {
+variable "nodes_subnet_private_cidr1" {
   type    = string
-  default = "NODES_SUBNET_PUBLIC"
+  default = "172.16.30.0/24"
 }
 
-variable "nodes_subnet_private_name" {
+variable "nodes_subnet_private_cidr2" {
   type    = string
-  default = "NODES_SUBNET_PRIVATE"
+  default = "172.16.40.0/24"
+}
+
+variable "nodes_subnet_public_name1" {
+  type    = string
+  default = "NODES_SUBNET_PUBLIC1a"
+}
+
+variable "nodes_subnet_public_name2" {
+  type    = string
+  default = "NODES_SUBNET_PUBLIC1b"
+}
+
+variable "nodes_subnet_private_name1" {
+  type    = string
+  default = "NODES_SUBNET_PRIVATE1a"
+}
+
+variable "nodes_subnet_private_name2" {
+  type    = string
+  default = "NODES_SUBNET_PRIVATE1b"
 }
 
 ## IGW NODES
