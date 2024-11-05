@@ -9,165 +9,165 @@ variable "us-east-1b" {
   default = "us-east-1b"
 }
 
-## VPC EKS AZ1
-variable "vpc_eks_az1_name" {
+## VPC ECS AZ1
+variable "vpc_ecs_az1_name" {
   type    = string
-  default = "VPC_EKS_AZ1"
+  default = "VPC_ECS_AZ1"
 }
 
-variable "vpc_eks_az1_cidr" {
+variable "vpc_ecs_az1_cidr" {
   type    = string
   default = "192.168.0.0/16"
 }
 
-## SUBNET EKS PUBLIC/PRIVATE
-variable "eks_subnet_public_cidr1" {
+## SUBNET ECS PUBLIC/PRIVATE
+variable "ecs_subnet_public_cidr1" {
   type    = string
   default = "192.168.10.0/24"
 }
 
-variable "eks_subnet_public_cidr2" {
+variable "ecs_subnet_public_cidr2" {
   type    = string
   default = "192.168.20.0/24"
 }
 
-variable "eks_subnet_private_cidr1" {
+variable "ecs_subnet_private_cidr1" {
   type    = string
   default = "192.168.30.0/24"
 }
 
-variable "eks_subnet_private_cidr2" {
+variable "ecs_subnet_private_cidr2" {
   type    = string
   default = "192.168.40.0/24"
 }
 
-variable "eks_subnet_public_name1" {
+variable "ecs_subnet_public_name1" {
   type    = string
-  default = "EKS_SUBNET_PUBLIC1a"
+  default = "ECS_SUBNET_PUBLIC1a"
 }
 
-variable "eks_subnet_public_name2" {
+variable "ecs_subnet_public_name2" {
   type    = string
-  default = "EKS_SUBNET_PUBLIC1b"
+  default = "ECS_SUBNET_PUBLIC1b"
 }
 
-variable "eks_subnet_private_name1" {
+variable "ecs_subnet_private_name1" {
   type    = string
-  default = "EKS_SUBNET_PRIVATE1a"
+  default = "ECS_SUBNET_PRIVATE1a"
 }
 
-variable "eks_subnet_private_name2" {
+variable "ecs_subnet_private_name2" {
   type    = string
-  default = "EKS_SUBNET_PRIVATE1b"
+  default = "ECS_SUBNET_PRIVATE1b"
 }
 
-## IGW EKS
-variable "eks_igw_name" {
+## IGW ECS
+variable "ecs_igw_name" {
   type    = string
-  default = "IGW_EKS"
+  default = "IGW_ECS"
 }
 
-## NATGW EKS
-variable "eks_natgw_name" {
+## NATGW ECS
+variable "ecs_natgw_name" {
   type    = string
-  default = "NATGW_EKS"
+  default = "NATGW_ECS"
 }
 
-## EKS ROUTE TABLE
-variable "rt_public_eks_name" {
+## ECS ROUTE TABLE
+variable "rt_public_ecs_name" {
   type    = string
-  default = "RT_PUBLIC_EKS"
+  default = "RT_PUBLIC_ECS"
 }
 
-variable "rt_private_eks_name" {
+variable "rt_private_ecs_name" {
   type    = string
-  default = "RT_PRIVATE_EKS"
+  default = "RT_PRIVATE_ECS"
 }
 
-## VPC NODES AZ1
-variable "vpc_nodes_az1_name" {
+## VPC ECS2 AZ2
+variable "vpc_ecs_az2_name" {
   type    = string
-  default = "VPC_NODES_AZ1"
+  default = "VPC_ECS2_AZ2"
 }
 
-variable "vpc_nodes_az1_cidr" {
+variable "vpc_ecs_az2_cidr" {
   type    = string
   default = "172.16.0.0/16"
 }
 
-## SUBNET NODES PUBLIC/PRIVATE
-variable "nodes_subnet_public_cidr1" {
+## SUBNET ECS2 PUBLIC/PRIVATE
+variable "ecs2_subnet_public_cidr1" {
   type    = string
   default = "172.16.10.0/24"
 }
 
-variable "nodes_subnet_public_cidr2" {
+variable "ecs2_subnet_public_cidr2" {
   type    = string
   default = "172.16.20.0/24"
 }
 
-variable "nodes_subnet_private_cidr1" {
+variable "ecs2_subnet_private_cidr1" {
   type    = string
   default = "172.16.30.0/24"
 }
 
-variable "nodes_subnet_private_cidr2" {
+variable "ecs2_subnet_private_cidr2" {
   type    = string
   default = "172.16.40.0/24"
 }
 
-variable "nodes_subnet_public_name1" {
+variable "ecs2_subnet_public_name1" {
   type    = string
-  default = "NODES_SUBNET_PUBLIC1a"
+  default = "ECS2_SUBNET_PUBLIC1a"
 }
 
-variable "nodes_subnet_public_name2" {
+variable "ecs2_subnet_public_name2" {
   type    = string
-  default = "NODES_SUBNET_PUBLIC1b"
+  default = "ECS2_SUBNET_PUBLIC1b"
 }
 
-variable "nodes_subnet_private_name1" {
+variable "ecs2_subnet_private_name1" {
   type    = string
-  default = "NODES_SUBNET_PRIVATE1a"
+  default = "ECS2_SUBNET_PRIVATE1a"
 }
 
-variable "nodes_subnet_private_name2" {
+variable "ecs2_subnet_private_name2" {
   type    = string
-  default = "NODES_SUBNET_PRIVATE1b"
+  default = "ECS2_SUBNET_PRIVATE1b"
 }
 
-## IGW NODES
-variable "nodes_igw_name" {
+## IGW ECS2
+variable "ecs2_igw_name" {
   type    = string
-  default = "IGW_NODES"
+  default = "IGW_ECS2"
 }
 
-## NATGW NODES
-variable "nodes_natgw_name" {
+## NATGW ECS2
+variable "ecs2_natgw_name" {
   type    = string
-  default = "NATGW_NODES"
+  default = "NATGW_ECS2"
 }
 
-## NODES ROUTE TABLE
-variable "rt_public_nodes_name" {
+## ECS2 ROUTE TABLE
+variable "rt_public_ecs2_name" {
   type    = string
-  default = "RT_PUBLIC_NODES"
+  default = "RT_PUBLIC_ECS2"
 }
 
-variable "rt_private_nodes_name" {
+variable "rt_private_ecs2_name" {
   type    = string
-  default = "RT_PRIVATE_NODES"
+  default = "RT_PRIVATE_ECS2"
 }
 
-## SG NODES
-variable "sg_nodes_name" {
+## SG ECS2
+variable "sg_ecs_name" {
   type    = string
-  default = "SG_NODES"
+  default = "SG_ECS"
 }
 
-variable "sg_nodes_description" {
+variable "sg_ecs2_description" {
   type    = string
-  default = "Permite HTTP e HTTPs para os nodes do eks"
+  default = "Permite HTTP e HTTPs para os cluster do ecs"
 }
 
 ## SG DB
@@ -184,5 +184,5 @@ variable "sg_db_description" {
 ## VPC PEERING 
 variable "peering_name" {
   type    = string
-  default = "PEERING_EKS-NODES"
+  default = "PEERING_ECS-ECS2"
 }

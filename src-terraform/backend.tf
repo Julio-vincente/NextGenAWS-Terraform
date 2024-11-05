@@ -15,12 +15,8 @@ module "IAM" {
   source = "./modules/IAM"
 }
 
-module "EKS" {
-  source            = "./modules/EKS"
-  public_subnet_ids = module.VPC.public_subnet_ids
-  eks_role_arn      = module.IAM.eks_role_arn
-  nodes_role_arn    = module.IAM.nodes_role_arn
-  depends_on        = [module.VPC, module.IAM]
+module "ECS" {
+  source = "./modules/ECS"
 }
 
 module "Route53" {
