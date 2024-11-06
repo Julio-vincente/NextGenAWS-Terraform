@@ -181,6 +181,17 @@ variable "sg_db_description" {
   default = "Permite Mysql para o rds"
 }
 
+## SG ALB
+variable "sg_alb_name" {
+  type = string
+  default = "ALB_SG" 
+}
+
+variable "sg_alb_description" {
+  type = string
+  default = "Liberando a porta http e https para o alb"
+}
+
 ## VPC PEERING 
 variable "peering_name" {
   type    = string

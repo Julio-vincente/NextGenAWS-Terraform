@@ -263,6 +263,43 @@ resource "aws_vpc_security_group_egress_rule" "db_sg_egress_all_rule" {
   cidr_ipv4         = "0.0.0.0/0"
 }
 
+## SECURITY GROUP DB 
+resource "aws_security_group" "sg_alb" {
+  name        = var.sg_alb_name
+  description = var.sg_alb_description
+  vpc_id      = aws_eip.eip_ecs.id
+}
+
+resource "aws_vpc_security_group_ingress_rule" "alb_sg_ingress_https_rule" {
+  security_group_id = aws_security_group.sg_alb.id
+  from_port         = 443
+  to_port           = 443
+  ip_protocol       = "tcp"
+  cidr_ipv4         = "0.0.0.0/0"
+}
+
+resource "aws_vpc_security_group_ingress_rule" "alb_sg_ingress_http_rule" {
+  security_group_id = aws_security_group.sg_alb.id
+  from_port         = 80
+  to_port           = 80
+  ip_protocol       = "tcp"
+  cidr_ipv4         = "0.0.0.0/0"
+}
+
+resource "aws_vpc_security_group_ingress_rule" "alb_sg_ingress_http_rule" {
+  security_group_id = aws_security_group.sg_alb.id
+  from_port         = 80
+  to_port           = 80
+  ip_protocol       = "tcp"
+  cidr_ipv4         = "0.0.0.0/0"
+}
+
+resource "aws_vpc_security_group_egress_rule" "alb_sg_egress_all_rule" {
+  security_group_id = aws_security_group.sg_alb.id
+  ip_protocol       = "-1"
+  cidr_ipv4         = "0.0.0.0/0"
+}
+
 ## VPC PEERING WITH THE VPCs
 resource "aws_vpc_peering_connection" "ecs_vpc_peering" {
   vpc_id      = aws_vpc.vpc_ecs_az1.id
