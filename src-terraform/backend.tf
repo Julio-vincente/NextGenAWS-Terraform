@@ -2,17 +2,20 @@ provider "aws" {
   region = var.region_aws1
 }
 
-module "WAF" {
-  source     = "./modules/WAF"
-  depends_on = [module.VPC]
-}
-
 module "VPC" {
   source = "./modules/VPC"
 }
 
 module "IAM" {
   source = "./modules/IAM"
+}
+
+module "ECR" {
+  source = "./modules/ECR"
+}
+
+module "CloudWatch" {
+  source = "./modules/CloudWatch"
 }
 
 module "ECS" {
@@ -25,12 +28,20 @@ module "ECS" {
   depends_on         = [module.IAM, module.CloudWatch, module.VPC]
 }
 
-module "ECR" {
-  source = "./modules/ECR"
+module "CertificateManager" {
+  source = "./modules/CertificateManager"
+  domain_validation = module.Route53.validation_record_fqdns
+  record_fqdn       = module.Route53.validation_record_fqdns
 }
 
-module "CloudWatch" {
-  source = "./modules/CloudWatch"
+module "Route53" {
+  source                    = "./modules/Route53"
+  alb_zone_id               = module.ALB.alb_zone_id
+  alb_dns_name              = module.ALB.alb_dns_name
+  domain_validation_options = module.CertificateManager.certificate_domain
+  certificate_arn           = module.CertificateManager.certificate_arn
+  depends_on = [ module.CertificateManager ]
+
 }
 
 module "ALB" {
@@ -38,14 +49,13 @@ module "ALB" {
   alb_sg            = module.VPC.alb_sg
   subnet_public_alb = module.VPC.subnet_public_alb
   vpc_id            = module.VPC.vpc_id
-  depends_on        = [module.VPC, module.CertificateManager, module.Route53]
+  certificate_arn   = module.CertificateManager.certificate_arn
+  depends_on        = [module.CertificateManager]
 }
 
-module "CertificateManager" {
-  source     = "./modules/CertificateManager"
-  depends_on = [module.Route53]
-}
 
-module "Route53" {
-  source = "./modules/Route53"
+module "WAF" {
+  source     = "./modules/WAF"
+  alb_arn = module.ALB.alb_arn
+  depends_on = [module.VPC]
 }

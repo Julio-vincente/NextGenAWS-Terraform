@@ -54,7 +54,13 @@ resource "aws_iam_policy" "ecs_task_role" {
         Effect = "Allow"
         Action = [
           "dynamodb:PutItem",
-          "dynamodb:GetItem"
+          "dynamodb:GetItem",
+          "dynamodb:DeleteItem",
+          "dynamodb:Query",
+          "dynamodb:ListItem",
+          "dynamodb:CreateTable",
+          "dynamodb:UpdateTable",
+          "dynamodb:GetRecords"
         ]
         Resource = "*"
       }

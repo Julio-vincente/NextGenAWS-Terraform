@@ -44,3 +44,8 @@ variable "vendor_name" {
   type        = string
   default     = "AWS"
 }
+
+variable "alb_arn" {
+  description = "alb arn para o waf"
+  type = string
+}

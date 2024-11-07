@@ -183,12 +183,12 @@ variable "sg_db_description" {
 
 ## SG ALB
 variable "sg_alb_name" {
-  type = string
-  default = "ALB_SG" 
+  type    = string
+  default = "ALB_SG"
 }
 
 variable "sg_alb_description" {
-  type = string
+  type    = string
   default = "Liberando a porta http e https para o alb"
 }
 

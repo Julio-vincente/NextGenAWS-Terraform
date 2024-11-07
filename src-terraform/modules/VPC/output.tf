@@ -10,7 +10,7 @@ output "subnet_public_ecs" {
 
 output "alb_sg" {
   description = "id do sg para o alb"
-  value = aws_security_group.sg_alb.id
+  value       = aws_security_group.sg_alb.id
 }
 
 output "subnet_public_alb" {
@@ -20,5 +20,5 @@ output "subnet_public_alb" {
 
 output "vpc_id" {
   description = "vpc para o listener"
-  value = aws_vpc.vpc_ecs_az1.id
+  value       = aws_vpc.vpc_ecs_az1.id
 }
