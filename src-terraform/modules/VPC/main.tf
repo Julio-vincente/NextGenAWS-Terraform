@@ -1,304 +1,210 @@
-## VPC ECS
-resource "aws_vpc" "vpc_ecs_az1" {
-  cidr_block           = var.vpc_ecs_az1_cidr
-  enable_dns_support   = true
-  enable_dns_hostnames = true
+# VPC MAIN
+resource "aws_vpc" "main_vpc" {
+  cidr_block = var.vpc_cidr
+
   tags = {
-    Name = var.vpc_ecs_az1_name
+    Name = var.vpc_name
   }
 }
 
-## SUBNET ECS PUBLIC/PRIVATE
-resource "aws_subnet" "ecs_subnet_public1" {
-  vpc_id                  = aws_vpc.vpc_ecs_az1.id
-  cidr_block              = var.ecs_subnet_public_cidr1
-  availability_zone       = var.us-east-1a
-  map_public_ip_on_launch = true
+# SUBNETS PUBLICAS
+resource "aws_subnet" "pub1a" {
+  vpc_id            = aws_vpc.main_vpc.id
+  availability_zone = var.us-east-1a
+  cidr_block        = var.subnet_pub1a_cidr
+
   tags = {
-    Name = var.ecs_subnet_public_name1
+    Name = var.subnet_pub1a_name
   }
 }
 
-resource "aws_subnet" "ecs_subnet_public2" {
-  vpc_id                  = aws_vpc.vpc_ecs_az1.id
-  cidr_block              = var.ecs_subnet_public_cidr2
-  availability_zone       = var.us-east-1b
-  map_public_ip_on_launch = true
+resource "aws_subnet" "pub1b" {
+  vpc_id            = aws_vpc.main_vpc.id
+  availability_zone = var.us-east-1b
+  cidr_block        = var.subnet_pub1b_cidr
+
   tags = {
-    Name = var.ecs_subnet_public_name2
+    Name = var.subnet_pub1b_name
   }
 }
 
-resource "aws_subnet" "ecs_subnet_private1" {
-  vpc_id                  = aws_vpc.vpc_ecs_az1.id
-  cidr_block              = var.ecs_subnet_private_cidr1
-  availability_zone       = var.us-east-1b
-  map_public_ip_on_launch = true
+# SUBNETS PRIVADAS
+resource "aws_subnet" "priv1a" {
+  vpc_id            = aws_vpc.main_vpc.id
+  availability_zone = var.us-east-1a
+  cidr_block        = var.subnet_priv1a_cidr
+
   tags = {
-    Name = var.ecs_subnet_private_name1
+    Name = var.subnet_priv1a_name
   }
 }
 
-resource "aws_subnet" "ecs_subnet_private2" {
-  vpc_id                  = aws_vpc.vpc_ecs_az1.id
-  cidr_block              = var.ecs_subnet_private_cidr2
-  availability_zone       = var.us-east-1b
-  map_public_ip_on_launch = true
+resource "aws_subnet" "priv1b" {
+  vpc_id            = aws_vpc.main_vpc.id
+  availability_zone = var.us-east-1b
+  cidr_block        = var.subnet_priv1b_cidr
+
   tags = {
-    Name = var.ecs_subnet_private_name2
+    Name = var.subnet_priv1b_name
   }
 }
 
-## IGW ECS
-resource "aws_internet_gateway" "igw_ecs" {
-  vpc_id = aws_vpc.vpc_ecs_az1.id
+# INTERNET GATEWAY
+resource "aws_internet_gateway" "igw" {
+  vpc_id = aws_vpc.main_vpc.id
 
   tags = {
-    Name = var.ecs_igw_name
+    Name = var.igw_prod
   }
 }
 
-## NAT GATEWAY ECS
-resource "aws_eip" "eip_ecs" {}
+# NAT GATEWAY
+resource "aws_eip" "elastic_ip" {}
 
-resource "aws_nat_gateway" "nat_gateway_ecs" {
-  allocation_id = aws_eip.eip_ecs.id
-  subnet_id     = aws_subnet.ecs_subnet_public1.id
+resource "aws_nat_gateway" "nat_gw" {
+  subnet_id     = aws_subnet.pub1a.id
+  allocation_id = aws_eip.elastic_ip.id
 
   tags = {
-    Name = var.ecs_natgw_name
+    Name = var.natgw_name
   }
 }
 
-## VPC ECS ROUTE TABLES
-resource "aws_route_table" "public_rt_ecs" {
-  vpc_id = aws_vpc.vpc_ecs_az1.id
-
-  route {
-    cidr_block                = aws_vpc.vpc_ecs2s_az1.cidr_block
-    vpc_peering_connection_id = aws_vpc_peering_connection.ecs_vpc_peering.id
-  }
+# ROUTE TABLE PUBLICAS
+resource "aws_route_table" "rt_public" {
+  vpc_id = aws_vpc.main_vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.igw_ecs.id
-  }
-  tags = {
-    Name = var.rt_public_ecs_name
-  }
-}
-
-resource "aws_route_table" "private_rt_ecs" {
-  vpc_id = aws_vpc.vpc_ecs_az1.id
-
-  route {
-    cidr_block                = aws_vpc.vpc_ecs2s_az1.cidr_block
-    vpc_peering_connection_id = aws_vpc_peering_connection.ecs_vpc_peering.id
-  }
-
-  route {
-    cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.nat_gateway_ecs.id
+    gateway_id = aws_internet_gateway.igw.id
   }
 
   tags = {
-    Name = var.rt_private_ecs_name
+    Name = var.rt_pub_name
   }
 }
 
-## VPC ecs2S
-resource "aws_vpc" "vpc_ecs2s_az1" {
-  cidr_block           = var.vpc_ecs_az2_cidr
-  enable_dns_support   = true
-  enable_dns_hostnames = true
-  tags = {
-    Name = var.vpc_ecs_az2_name
-  }
+resource "aws_route_table_association" "rt_ass_pub1" {
+  route_table_id = aws_route_table.rt_public.id
+  subnet_id      = aws_subnet.pub1a.id
 }
 
-## SUBNET ecs2S PUBLIC/PRIVATE
-resource "aws_subnet" "ecs2s_subnet_public1" {
-  vpc_id                  = aws_vpc.vpc_ecs2s_az1.id
-  cidr_block              = var.ecs2_subnet_public_cidr1
-  availability_zone       = var.us-east-1a
-  map_public_ip_on_launch = true
-  tags = {
-    Name = var.ecs2_subnet_private_name1
-  }
+resource "aws_route_table_association" "rt_ass_pub2" {
+  route_table_id = aws_route_table.rt_public.id
+  subnet_id      = aws_subnet.pub1b.id
 }
 
-resource "aws_subnet" "ecs2s_subnet_public2" {
-  vpc_id                  = aws_vpc.vpc_ecs2s_az1.id
-  cidr_block              = var.ecs2_subnet_public_cidr2
-  availability_zone       = var.us-east-1a
-  map_public_ip_on_launch = true
-  tags = {
-    Name = var.ecs2_subnet_public_name2
-  }
-}
-
-resource "aws_subnet" "ecs2s_subnet_private1" {
-  vpc_id                  = aws_vpc.vpc_ecs2s_az1.id
-  cidr_block              = var.ecs2_subnet_private_cidr1
-  availability_zone       = var.us-east-1b
-  map_public_ip_on_launch = true
-  tags = {
-    Name = var.ecs2_subnet_private_name1
-  }
-}
-
-resource "aws_subnet" "ecs2s_subnet_private2" {
-  vpc_id                  = aws_vpc.vpc_ecs2s_az1.id
-  cidr_block              = var.ecs2_subnet_private_cidr2
-  availability_zone       = var.us-east-1b
-  map_public_ip_on_launch = true
-  tags = {
-    Name = var.ecs2_subnet_private_name2
-  }
-}
-
-## IGW ecs2S
-resource "aws_internet_gateway" "igw_ecs2s" {
-  vpc_id = aws_vpc.vpc_ecs2s_az1.id
-
-  tags = {
-    Name = var.ecs2_igw_name
-  }
-}
-
-## NAT GATEWAY ecs2S
-resource "aws_eip" "eip_ecs2s" {}
-
-resource "aws_nat_gateway" "nat_gateway_ecs2s" {
-  allocation_id = aws_eip.eip_ecs2s.id
-  subnet_id     = aws_subnet.ecs2s_subnet_public1.id
-
-  tags = {
-    Name = var.ecs2_natgw_name
-  }
-}
-
-## VPC ecs2S ROUTE TABLES
-resource "aws_route_table" "public_rt_ecs2s" {
-  vpc_id = aws_vpc.vpc_ecs2s_az1.id
-
-  route {
-    cidr_block                = aws_vpc.vpc_ecs_az1.cidr_block
-    vpc_peering_connection_id = aws_vpc_peering_connection.ecs_vpc_peering.id
-  }
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.igw_ecs2s.id
-  }
-  tags = {
-    Name = var.rt_public_ecs2_name
-  }
-}
-
-resource "aws_route_table" "private_rt_ecs2s" {
-  vpc_id = aws_vpc.vpc_ecs2s_az1.id
-
-  route {
-    cidr_block                = aws_vpc.vpc_ecs_az1.cidr_block
-    vpc_peering_connection_id = aws_vpc_peering_connection.ecs_vpc_peering.id
-  }
+# ROUTE TABLE PRIVADAS
+resource "aws_route_table" "rt_private" {
+  vpc_id = aws_vpc.main_vpc.id
 
   route {
     cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.nat_gateway_ecs2s.id
+    nat_gateway_id = aws_nat_gateway.nat_gw.id
   }
 
   tags = {
-    Name = var.rt_private_ecs2_name
+    Name = var.rt_priv_name
   }
 }
 
-## SECURITY GROUP ecs2S 
-resource "aws_security_group" "sg_ecs2s" {
-  name        = var.sg_ecs_name
-  description = var.sg_ecs2_description
-  vpc_id      = aws_vpc.vpc_ecs2s_az1.id
+resource "aws_route_table_association" "rt_ass_priv1" {
+  route_table_id = aws_route_table.rt_private.id
+  subnet_id      = aws_subnet.priv1a.id
 }
 
-resource "aws_vpc_security_group_ingress_rule" "ecs2s_sg_ingress_http_rule" {
-  security_group_id = aws_security_group.sg_ecs2s.id
-  from_port         = 80
-  to_port           = 80
-  ip_protocol       = "tcp"
-  cidr_ipv4         = "0.0.0.0/0"
+resource "aws_route_table_association" "rt_ass_priv2" {
+  route_table_id = aws_route_table.rt_private.id
+  subnet_id      = aws_subnet.priv1b.id
 }
 
-resource "aws_vpc_security_group_ingress_rule" "ecs2s_sg_ingress_https_rule" {
-  security_group_id = aws_security_group.sg_ecs2s.id
-  from_port         = 443
-  to_port           = 443
-  ip_protocol       = "tcp"
-  cidr_ipv4         = "0.0.0.0/0"
-}
-
-resource "aws_vpc_security_group_egress_rule" "ecs2s_sg_egress_all_rule" {
-  security_group_id = aws_security_group.sg_ecs2s.id
-  ip_protocol       = "-1"
-  cidr_ipv4         = "0.0.0.0/0"
-}
-
-## SECURITY GROUP DB 
-resource "aws_security_group" "sg_db" {
-  name        = var.sg_db_name
-  description = var.sg_db_description
-  vpc_id      = aws_vpc.vpc_ecs2s_az1.id
-}
-
-resource "aws_vpc_security_group_ingress_rule" "db_sg_ingress_mysql_rule" {
-  security_group_id = aws_security_group.sg_db.id
-  from_port         = 3306
-  to_port           = 3306
-  ip_protocol       = "tcp"
-  cidr_ipv4         = "0.0.0.0/0"
-}
-
-resource "aws_vpc_security_group_egress_rule" "db_sg_egress_all_rule" {
-  security_group_id = aws_security_group.sg_db.id
-  ip_protocol       = "-1"
-  cidr_ipv4         = "0.0.0.0/0"
-}
-
-## SECURITY GROUP DB 
-resource "aws_security_group" "sg_alb" {
+## Security Groups Alb, Rds e ECS
+# ALB SG
+resource "aws_security_group" "alb_sg" {
   name        = var.sg_alb_name
   description = var.sg_alb_description
-  vpc_id      = aws_eip.eip_ecs.id
-}
+  vpc_id      = aws_vpc.main_vpc.id
 
-resource "aws_vpc_security_group_ingress_rule" "alb_sg_ingress_https_rule" {
-  security_group_id = aws_security_group.sg_alb.id
-  from_port         = 443
-  to_port           = 443
-  ip_protocol       = "tcp"
-  cidr_ipv4         = "0.0.0.0/0"
-}
-
-resource "aws_vpc_security_group_ingress_rule" "alb_sg_ingress_http_rule" {
-  security_group_id = aws_security_group.sg_alb.id
-  from_port         = 80
-  to_port           = 80
-  ip_protocol       = "tcp"
-  cidr_ipv4         = "0.0.0.0/0"
-}
-
-resource "aws_vpc_security_group_egress_rule" "alb_sg_egress_all_rule" {
-  security_group_id = aws_security_group.sg_alb.id
-  ip_protocol       = "-1"
-  cidr_ipv4         = "0.0.0.0/0"
-}
-
-## VPC PEERING WITH THE VPCs
-resource "aws_vpc_peering_connection" "ecs_vpc_peering" {
-  vpc_id      = aws_vpc.vpc_ecs_az1.id
-  peer_vpc_id = aws_vpc.vpc_ecs2s_az1.id
-  auto_accept = true
-
-  tags = {
-    Name = var.peering_name
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+# ECS SG
+resource "aws_security_group" "ecs_sg" {
+  name        = var.sg_ecs_name
+  description = var.sg_ecs_description
+  vpc_id      = aws_vpc.main_vpc.id
+
+  ingress {
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb_sg.id]
+  }
+
+  ingress {
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb_sg.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+# RDS SG
+resource "aws_security_group" "rds_sg" {
+  name        = var.sg_rds_name
+  description = var.sg_rds_description
+  vpc_id      = aws_vpc.main_vpc.id
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_security_group_rule" "mysql_ecs_sg" {
+  type                     = "ingress"
+  from_port                = 3306
+  to_port                  = 3306
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.rds_sg.id
+  security_group_id        = aws_security_group.ecs_sg.id
+  depends_on               = [aws_security_group.alb_sg, aws_security_group.ecs_sg, aws_security_group.rds_sg]
+}
+
+resource "aws_security_group_rule" "mysql_rds_sg" {
+  type                     = "ingress"
+  from_port                = 3306
+  to_port                  = 3306
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.ecs_sg.id
+  security_group_id        = aws_security_group.rds_sg.id
+  depends_on               = [aws_security_group.alb_sg, aws_security_group.ecs_sg, aws_security_group.rds_sg]
 }

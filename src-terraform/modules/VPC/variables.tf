@@ -1,199 +1,120 @@
-## AVAILABILITY ZONES
+# REGIOES AWS
 variable "us-east-1a" {
-  type    = string
-  default = "us-east-1a"
+    type = string
+    default = "us-east-1a"
 }
 
 variable "us-east-1b" {
-  type    = string
-  default = "us-east-1b"
+    type = string
+    default = "us-east-1b"
 }
 
-## VPC ECS AZ1
-variable "vpc_ecs_az1_name" {
-  type    = string
-  default = "VPC_ECS_AZ1"
+# VPC MAIN
+variable "vpc_name" {
+    type = string
+    default = "vpc_main"
 }
 
-variable "vpc_ecs_az1_cidr" {
-  type    = string
-  default = "192.168.0.0/16"
+variable "vpc_cidr" {
+    type = string
+    default = "192.168.0.0/16"
 }
 
-## SUBNET ECS PUBLIC/PRIVATE
-variable "ecs_subnet_public_cidr1" {
-  type    = string
-  default = "192.168.10.0/24"
+# SUBNETS PUBLICAS
+variable "subnet_pub1a_name" {
+    type = string
+    default = "sub_pub_1a"
 }
 
-variable "ecs_subnet_public_cidr2" {
-  type    = string
-  default = "192.168.20.0/24"
+variable "subnet_pub1a_cidr" {
+    type = string
+    default = "192.168.10.0/24"
 }
 
-variable "ecs_subnet_private_cidr1" {
-  type    = string
-  default = "192.168.30.0/24"
+variable "subnet_pub1b_name" {
+    type = string
+    default = "sub_pub_1b"
 }
 
-variable "ecs_subnet_private_cidr2" {
-  type    = string
-  default = "192.168.40.0/24"
+variable "subnet_pub1b_cidr" {
+    type = string
+    default = "192.168.20.0/24"
 }
 
-variable "ecs_subnet_public_name1" {
-  type    = string
-  default = "ECS_SUBNET_PUBLIC1a"
+#SUBNETS PRIVADAS
+variable "subnet_priv1a_name" {
+    type = string
+    default = "sub_priv_1a"
 }
 
-variable "ecs_subnet_public_name2" {
-  type    = string
-  default = "ECS_SUBNET_PUBLIC1b"
+variable "subnet_priv1a_cidr" {
+    type = string
+    default = "192.168.30.0/24"
 }
 
-variable "ecs_subnet_private_name1" {
-  type    = string
-  default = "ECS_SUBNET_PRIVATE1a"
+variable "subnet_priv1b_name" {
+    type = string
+    default = "sub_priv_1b"
 }
 
-variable "ecs_subnet_private_name2" {
-  type    = string
-  default = "ECS_SUBNET_PRIVATE1b"
+variable "subnet_priv1b_cidr" {
+    type = string
+    default = "192.168.40.0/24"
 }
 
-## IGW ECS
-variable "ecs_igw_name" {
-  type    = string
-  default = "IGW_ECS"
+# IGW
+variable "igw_prod" {
+    type = string
+    default = "igw_prod"
 }
 
-## NATGW ECS
-variable "ecs_natgw_name" {
-  type    = string
-  default = "NATGW_ECS"
+# NAT GATEWAY
+variable "natgw_name" {
+    type = string
+    default = "natgw_prod"
 }
 
-## ECS ROUTE TABLE
-variable "rt_public_ecs_name" {
-  type    = string
-  default = "RT_PUBLIC_ECS"
+# ROUTE TABLE PUB
+variable "rt_pub_name" {
+    type = string
+    default = "rt_pub_prod"
 }
 
-variable "rt_private_ecs_name" {
-  type    = string
-  default = "RT_PRIVATE_ECS"
+# ROUTE TABLE PRIV
+variable "rt_priv_name" {
+    type = string
+    default = "rt_priv_prod"
 }
 
-## VPC ECS2 AZ2
-variable "vpc_ecs_az2_name" {
-  type    = string
-  default = "VPC_ECS2_AZ2"
-}
-
-variable "vpc_ecs_az2_cidr" {
-  type    = string
-  default = "172.16.0.0/16"
-}
-
-## SUBNET ECS2 PUBLIC/PRIVATE
-variable "ecs2_subnet_public_cidr1" {
-  type    = string
-  default = "172.16.10.0/24"
-}
-
-variable "ecs2_subnet_public_cidr2" {
-  type    = string
-  default = "172.16.20.0/24"
-}
-
-variable "ecs2_subnet_private_cidr1" {
-  type    = string
-  default = "172.16.30.0/24"
-}
-
-variable "ecs2_subnet_private_cidr2" {
-  type    = string
-  default = "172.16.40.0/24"
-}
-
-variable "ecs2_subnet_public_name1" {
-  type    = string
-  default = "ECS2_SUBNET_PUBLIC1a"
-}
-
-variable "ecs2_subnet_public_name2" {
-  type    = string
-  default = "ECS2_SUBNET_PUBLIC1b"
-}
-
-variable "ecs2_subnet_private_name1" {
-  type    = string
-  default = "ECS2_SUBNET_PRIVATE1a"
-}
-
-variable "ecs2_subnet_private_name2" {
-  type    = string
-  default = "ECS2_SUBNET_PRIVATE1b"
-}
-
-## IGW ECS2
-variable "ecs2_igw_name" {
-  type    = string
-  default = "IGW_ECS2"
-}
-
-## NATGW ECS2
-variable "ecs2_natgw_name" {
-  type    = string
-  default = "NATGW_ECS2"
-}
-
-## ECS2 ROUTE TABLE
-variable "rt_public_ecs2_name" {
-  type    = string
-  default = "RT_PUBLIC_ECS2"
-}
-
-variable "rt_private_ecs2_name" {
-  type    = string
-  default = "RT_PRIVATE_ECS2"
-}
-
-## SG ECS2
+# SG ECS
 variable "sg_ecs_name" {
-  type    = string
-  default = "SG_ECS"
+  type = string
+  default = "ECS-SG"
 }
 
-variable "sg_ecs2_description" {
-  type    = string
-  default = "Permite HTTP e HTTPs para os cluster do ecs"
+variable "sg_ecs_description" {
+    type = string
+    default = "Sg para o ecs permitindo que o sg do load balancer se comunique com o ecs permitindo HTTP e HTTPs"
 }
 
-## SG DB
-variable "sg_db_name" {
-  type    = string
-  default = "SG_DB"
-}
-
-variable "sg_db_description" {
-  type    = string
-  default = "Permite Mysql para o rds"
-}
-
-## SG ALB
+# SG ALB
 variable "sg_alb_name" {
-  type    = string
-  default = "ALB_SG"
+    type = string
+    default = "ALB-SG"
 }
 
 variable "sg_alb_description" {
-  type    = string
-  default = "Liberando a porta http e https para o alb"
+    type = string
+    default = "Sg para o alb permitindo HTTPs de forma segura e HTTP para redirecionar para HTTPs"
 }
 
-## VPC PEERING 
-variable "peering_name" {
-  type    = string
-  default = "PEERING_ECS-ECS2"
+# SG RDS
+variable "sg_rds_name" {
+    type = string
+    default = "RDS-SG"
+}
+
+variable "sg_rds_description" {
+  type = string
+  default = "Sg para o banco de dados RDS liberando a porta 3306/MYSQL"
 }

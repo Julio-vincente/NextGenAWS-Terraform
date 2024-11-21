@@ -1,4 +1,4 @@
 variable "ecr_name" {
-  type    = string
-  default = "ECR_REPO"
+    type = string
+    default = "ecr_repo"
 }

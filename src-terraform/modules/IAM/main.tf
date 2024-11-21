@@ -44,24 +44,12 @@ resource "aws_iam_policy" "ecs_task_role" {
     Statement = [
       {
         Effect = "Allow"
-        Action = [
-          "s3:GetObject",
-          "s3:PutObject"
-        ]
+        Action = "s3:*"
         Resource = "*"
       },
       {
         Effect = "Allow"
-        Action = [
-          "dynamodb:PutItem",
-          "dynamodb:GetItem",
-          "dynamodb:DeleteItem",
-          "dynamodb:Query",
-          "dynamodb:ListItem",
-          "dynamodb:CreateTable",
-          "dynamodb:UpdateTable",
-          "dynamodb:GetRecords"
-        ]
+        Action = "rds:*"
         Resource = "*"
       }
     ]
