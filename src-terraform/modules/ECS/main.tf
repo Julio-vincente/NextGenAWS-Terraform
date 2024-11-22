@@ -1,22 +1,61 @@
+# ECS Cluster
 resource "aws_ecs_cluster" "cluster_ecs" {
-    name = var.cluster_name
+  name = var.cluster_name
 
-    setting {
-      name = "containerInsights"
-      value = "enabled"
-    }
+  setting {
+    name  = "containerInsights"
+    value = "enabled"
+  }
 }
 
+# ECS Task Definition
 resource "aws_ecs_task_definition" "service_prod" {
-  family = var.task_family
+  family                   = var.task_family
   requires_compatibilities = ["FARGATE"]
-  task_role_arn = var.task_role_arn
-  execution_role_arn = var.execution_role_arn
-  container_definitions = jsonencode([
-    {
-      name = 
-      
-    }
-  ])
-  
+  network_mode             = "awsvpc"
+  cpu                      = "256"
+  memory                   = "512"
+  task_role_arn            = var.task_role_arn
+  execution_role_arn       = var.execution_role_arn
+
+  container_definitions = jsonencode([{
+    name        = "task_app"
+    image       = "975050267257.dkr.ecr.us-east-1.amazonaws.com/teste:latest"
+    cpu         = 256
+    memory      = 512
+    essential   = true
+    portMappings = [
+      {
+        containerPort = 80
+        hostPort      = 80
+        protocol      = "tcp"
+      }
+    ]
+  }])
+
+  depends_on = [aws_ecs_cluster.cluster_ecs]
+}
+
+
+# ECS Service
+resource "aws_ecs_service" "ecs_service" {
+  name            = var.service_name
+  cluster         = aws_ecs_cluster.cluster_ecs.id
+  task_definition = aws_ecs_task_definition.service_prod.arn
+  launch_type     = "FARGATE"
+  desired_count = 1
+
+  network_configuration {
+    subnets         = var.subnet_public_ids
+    security_groups = [var.sg_ecs_id]
+    assign_public_ip = true
+  }
+
+  load_balancer {
+    target_group_arn = var.target_group_arn
+    container_name   = "task_app"
+    container_port   = 80
+  }
+
+  depends_on = [ aws_ecs_task_definition.service_prod ]
 }

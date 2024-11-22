@@ -14,6 +14,26 @@ resource "aws_wafv2_web_acl" "waf_prod" {
   }
 
   rule {
+    name     = "AWSManagedRulesBotControlRuleSet"
+    priority = 3
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesBotControlRuleSet"
+        vendor_name = "AWS"
+      }
+    }
+
+    override_action {
+      none {}
+    }
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "blocked-bot"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
     name     = var.waf_prod_rule_name
     priority = 1
     statement {
@@ -56,7 +76,7 @@ resource "aws_wafv2_web_acl" "waf_prod" {
   }
 }
 
-# resource "aws_wafv2_web_acl_association" "association_alb" {
-#   resource_arn = var.alb_arn
-#   web_acl_arn  = aws_wafv2_web_acl.waf_prod.arn
-# }
+resource "aws_wafv2_web_acl_association" "association_alb" {
+  resource_arn = var.alb_arn
+  web_acl_arn = aws_wafv2_web_acl.waf_prod.arn
+}
