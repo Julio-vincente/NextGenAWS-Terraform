@@ -1,4 +1,3 @@
-
 # Application Load Balancer
 resource "aws_lb" "flask_alb" {
   name               = var.alb_name

@@ -1,0 +1,13 @@
+CREATE DATABASE library;
+
+USE library;
+
+CREATE TABLE authors (id INTEGER PRIMARY KEY, name TEXT);
+CREATE TABLE books (id INTEGER PRIMARY KEY, title TEXT, author_id INTEGER);
+
+INSERT INTO authors (id, name) VALUES (1, 'Raphael Montes');
+INSERT INTO authors (id, name) VALUES (2, 'Colleen Hoover');
+INSERT INTO books (id, title, author_id) VALUES (1, 'Jantar Secreto', 1);
+INSERT INTO books (id, title, author_id) VALUES (2, 'É assim que começa', 2);
+INSERT INTO books (id, title, author_id) VALUES (3, 'É assim que acaba', 2);
+INSERT INTO books (id, title, author_id) VALUES (4, 'Suicidas', 1);

@@ -9,8 +9,13 @@ output "sg_ecs_id" {
 }
 
 output "sg_alb_id" {
-  description = "sg ecs id"
+  description = "sg alb id"
   value       = aws_security_group.alb_sg.id
+}
+
+output "sg_db_id" {
+  description = "sg rds id"
+  value = aws_security_group.rds_sg.id
 }
 
 output "vpc_id" {

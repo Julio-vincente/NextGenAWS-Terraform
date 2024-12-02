@@ -60,3 +60,21 @@ resource "aws_iam_role_policy_attachment" "ecs_task_policy_attach" {
   policy_arn = aws_iam_policy.ecs_task_role.arn
   role       = aws_iam_role.task_role_ecs.name
 }
+
+# Auto Scaling Role
+resource "aws_iam_role" "autoscaling_role" {
+  name = "ecs-autoscaling-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action    = "sts:AssumeRole",
+        Effect    = "Allow",
+        Principal = {
+          Service = "application-autoscaling.amazonaws.com"
+        }
+      }
+    ]
+  })
+}

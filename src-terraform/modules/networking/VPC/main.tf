@@ -1,6 +1,8 @@
 # VPC MAIN
 resource "aws_vpc" "main_vpc" {
   cidr_block = var.vpc_cidr
+  enable_dns_support = true
+  enable_dns_hostnames = true
 
   tags = {
     Name = var.vpc_name
@@ -12,6 +14,7 @@ resource "aws_subnet" "pub1a" {
   vpc_id            = aws_vpc.main_vpc.id
   availability_zone = var.us-east-1a
   cidr_block        = var.subnet_pub1a_cidr
+  map_public_ip_on_launch = true
 
   tags = {
     Name = var.subnet_pub1a_name
@@ -22,6 +25,7 @@ resource "aws_subnet" "pub1b" {
   vpc_id            = aws_vpc.main_vpc.id
   availability_zone = var.us-east-1b
   cidr_block        = var.subnet_pub1b_cidr
+  map_public_ip_on_launch = true
 
   tags = {
     Name = var.subnet_pub1b_name
@@ -33,6 +37,7 @@ resource "aws_subnet" "priv1a" {
   vpc_id            = aws_vpc.main_vpc.id
   availability_zone = var.us-east-1a
   cidr_block        = var.subnet_priv1a_cidr
+  map_public_ip_on_launch = true
 
   tags = {
     Name = var.subnet_priv1a_name
@@ -43,6 +48,7 @@ resource "aws_subnet" "priv1b" {
   vpc_id            = aws_vpc.main_vpc.id
   availability_zone = var.us-east-1b
   cidr_block        = var.subnet_priv1b_cidr
+  map_public_ip_on_launch = true
 
   tags = {
     Name = var.subnet_priv1b_name
@@ -162,7 +168,7 @@ resource "aws_security_group" "ecs_sg" {
 
   ingress {
     from_port       = 80
-    to_port         = 80
+    to_port         = 800
     protocol        = "tcp"
     security_groups = [aws_security_group.alb_sg.id]
   }
