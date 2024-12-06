@@ -15,3 +15,4 @@ output "alb_dns_name" {
 output "alb_zone_id" {
   value = aws_lb.flask_alb.zone_id
 }
+

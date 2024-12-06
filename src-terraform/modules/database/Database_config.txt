@@ -10,4 +10,4 @@ INSERT INTO authors (id, name) VALUES (2, 'Colleen Hoover');
 INSERT INTO books (id, title, author_id) VALUES (1, 'Jantar Secreto', 1);
 INSERT INTO books (id, title, author_id) VALUES (2, 'É assim que começa', 2);
 INSERT INTO books (id, title, author_id) VALUES (3, 'É assim que acaba', 2);
-INSERT INTO books (id, title, author_id) VALUES (4, 'Suicidas', 1);
+INSERT INTO books (id, title, author_id) VALUES (4, 'Suicidas', 1); 

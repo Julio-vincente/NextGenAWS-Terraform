@@ -1,7 +1,11 @@
 output "rds_username" {
-    value = jsondecode(aws_secretsmanager_secret_version.secrets_rds.secret_string)["username"]
+  value = local.rds_credentials["username"]
 }
 
 output "rds_password" {
-    value = jsondecode(aws_secretsmanager_secret_version.secrets_rds.secret_string)["password"]
+  value = local.rds_credentials["password"]
+}
+
+output "secret_arn" {
+  value = data.aws_secretsmanager_secret.rds_secret.arn
 }

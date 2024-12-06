@@ -10,6 +10,13 @@ module "VPC" {
 # Modulo IAM
 module "IAM" {
   source = "./modules/security/IAM"
+  secret_arn = module.SecretsManager.secret_arn
+  bucket_arn = module.S3.bucket_arn
+}
+
+# Modulo ACM
+module "CertificateManager" {
+  source = "./modules/networking_frontend/CertificateManager"
 }
 
 # Modulo ALB
@@ -18,15 +25,16 @@ module "ALB" {
   public_subnet_ids = module.VPC.public_subnet_ids
   sg_alb_id         = module.VPC.sg_alb_id
   vpc_id            = module.VPC.vpc_id
+  certificate_arn = module.CertificateManager.certificate_arn
   depends_on = [ module.VPC ]
 }
 
-# # Modulo Route53
-# module "Route53" {
-#   source = "./modules/networking_frontend/Route53"
-#   alb_zone_id = module.ALB.alb_zone_id
-#   alb_dns_name = module.ALB.alb_dns_name
-# }
+# Modulo Route53
+module "Route53" {
+  source = "./modules/networking_frontend/Route53"
+  alb_zone_id = module.ALB.alb_zone_id
+  alb_dns_name = module.ALB.alb_dns_name
+}
 
 # Modulo ECR
 module "ECR" {
@@ -81,4 +89,9 @@ module "CloudWatch" {
   cluster_name = module.ECS.cluster_name
   service_name = module.ECS.service_name
   scale_up_arn = module.AutoScaling.scale_up_arn
+}
+
+# Modulo S3
+module "S3" {
+  source = "./modules/storage/s3"
 }

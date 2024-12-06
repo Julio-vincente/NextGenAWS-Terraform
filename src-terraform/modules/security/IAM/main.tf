@@ -1,6 +1,6 @@
 ## ECS TASKS E EXECUTION ROLES
 resource "aws_iam_role" "execution_role_ecs" {
-  name = var.excution_role_name
+  name = "ExecRoleECS"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -15,13 +15,13 @@ resource "aws_iam_role" "execution_role_ecs" {
   })
 }
 
-resource "aws_iam_role_policy_attachments_exclusive" "example" {
+resource "aws_iam_role_policy_attachments_exclusive" "ECSTaskRole" {
   role_name   = aws_iam_role.execution_role_ecs.name
   policy_arns = ["arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"]
 }
 
 resource "aws_iam_role" "task_role_ecs" {
-  name = var.task_role_name
+  name = "TaskRoleECS"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -38,19 +38,28 @@ resource "aws_iam_role" "task_role_ecs" {
 
 ## POLICY PARA TASK ROLE
 resource "aws_iam_policy" "ecs_task_role" {
-  name = var.policy_s3_dyanmodb
+  name = "ecs_policy"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
         Effect   = "Allow"
-        Action   = "s3:*"
-        Resource = "*"
+        Action   = [
+          "secretsmanager:GetSecretValue"
+        ],
+        Resource = var.secret_arn
       },
       {
         Effect   = "Allow"
-        Action   = "rds:*"
-        Resource = "*"
+        Action   = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:ListObject"
+        ]
+        Resource = [
+          "${var.bucket_arn}/*",
+          var.bucket_arn
+        ]
       }
     ]
   })
@@ -61,7 +70,6 @@ resource "aws_iam_role_policy_attachment" "ecs_task_policy_attach" {
   role       = aws_iam_role.task_role_ecs.name
 }
 
-# Auto Scaling Role
 resource "aws_iam_role" "autoscaling_role" {
   name = "ecs-autoscaling-role"
 

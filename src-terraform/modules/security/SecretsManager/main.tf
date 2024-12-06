@@ -1,20 +1,11 @@
-resource "aws_secretsmanager_secret" "rds_password_secret" {
-  name = "rds_secrets_databases"
+data "aws_secretsmanager_secret" "rds_secret" {
+  name = "prod/library/mysql"
 }
 
-resource "aws_secretsmanager_secret_version" "secrets_rds" {
-    secret_id = aws_secretsmanager_secret.rds_password_secret.id
-    secret_string = jsonencode({
-        username = "admin"
-        password = "Senai-134"
-    })
+data "aws_secretsmanager_secret_version" "rds_secret_version" {
+  secret_id = data.aws_secretsmanager_secret.rds_secret.id
 }
 
-# resource "aws_secretsmanager_secret_rotation" "secret_rds_rotation" {
-#   secret_id = aws_secretsmanager_secret.rds_password_secret.id
-#   rotate_immediately = false
-
-#   rotation_rules {
-#     automatically_after_days = 30
-#   }
-# }
+locals {
+  rds_credentials = jsondecode(data.aws_secretsmanager_secret_version.rds_secret_version.secret_string)
+}
