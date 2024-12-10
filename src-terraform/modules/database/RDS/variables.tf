@@ -24,3 +24,4 @@ variable "allocated_storage" {
   default     = 10
   description = "Armazenamento em GB."
 }
+

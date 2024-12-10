@@ -32,3 +32,15 @@ variable "sg_ecs_id" {
 variable "target_group_arn" {
   type = string
 }
+
+variable "rds_endpoint" {
+  type = string
+}
+
+variable "rds_username" {
+  type = string
+}
+
+variable "rds_password" {
+  type = string
+}

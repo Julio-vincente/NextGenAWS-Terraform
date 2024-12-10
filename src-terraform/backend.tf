@@ -49,6 +49,9 @@ module "ECS" {
   subnet_public_ids  = module.VPC.public_subnet_ids
   sg_ecs_id          = module.VPC.sg_ecs_id
   target_group_arn   = module.ALB.target_group_arn
+  rds_endpoint = module.RDS.rds_endpoint
+  rds_username = module.SecretsManager.rds_username
+  rds_password = module.SecretsManager.rds_password
 
   depends_on = [ module.ALB, module.VPC, module.IAM ]
 }
@@ -93,5 +96,5 @@ module "CloudWatch" {
 
 # Modulo S3
 module "S3" {
-  source = "./modules/storage/s3"
+  source = "./modules/storage/S3"
 }

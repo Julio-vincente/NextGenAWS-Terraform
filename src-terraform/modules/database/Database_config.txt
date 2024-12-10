@@ -4,7 +4,7 @@ USE library;
 
 CREATE TABLE authors (id INTEGER PRIMARY KEY, name TEXT);
 CREATE TABLE books (id INTEGER PRIMARY KEY, title TEXT, author_id INTEGER);
-
+    
 INSERT INTO authors (id, name) VALUES (1, 'Raphael Montes');
 INSERT INTO authors (id, name) VALUES (2, 'Colleen Hoover');
 INSERT INTO books (id, title, author_id) VALUES (1, 'Jantar Secreto', 1);

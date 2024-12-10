@@ -1,3 +1,3 @@
-resource "aws_s3_bucket" "cloud_front_bucket" {
-  bucket = "CloudFront_Assets"
+resource "aws_s3_bucket" "s3_default" {
+    bucket = "bucket default"  
 }

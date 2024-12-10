@@ -20,7 +20,7 @@ resource "aws_ecs_task_definition" "service_prod" {
 
   container_definitions = jsonencode([{
     name        = "task_app"
-    image       = "209479292626.dkr.ecr.us-east-1.amazonaws.com/ecr_repo:latest"
+    image       = "209479292626.dkr.ecr.us-east-1.amazonaws.com/teste:latest"
     cpu         = 256
     memory      = 512
     essential   = true
@@ -29,6 +29,28 @@ resource "aws_ecs_task_definition" "service_prod" {
         containerPort = 80
         hostPort      = 80
         protocol      = "tcp"
+      }
+    ]
+    enviroment = [
+      {
+        name = "DB_HOST"
+        value = var.rds_endpoint
+      },
+
+      {
+        name = "DB_USER"
+        value = var.rds_username
+
+      },
+
+      {
+        name = "DB_PASSWORD"
+        value = var.rds_password
+      },
+
+      {
+        name = "DB_NAME"
+        value = "library"
       }
     ]
   }])

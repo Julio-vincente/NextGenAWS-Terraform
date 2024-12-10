@@ -1,3 +1,4 @@
 output "bucket_arn" {
-  value = aws_s3_bucket.cloud_front_bucket.arn
+    value = aws_s3_bucket.s3_default.arn
+  
 }

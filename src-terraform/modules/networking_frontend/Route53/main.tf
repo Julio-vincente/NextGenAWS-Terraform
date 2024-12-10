@@ -3,7 +3,7 @@ resource "aws_route53_zone" "nextgen_hosted_zone" {
 }
 
 resource "aws_route53_record" "alb_record" {
-  zone_id = aws_route53_zone.main.zone_id
+  zone_id = aws_route53_zone.nextgen_hosted_zone.zone_id
   name    = "nextgenz.click"
   type    = "A"
   alias {
@@ -14,7 +14,7 @@ resource "aws_route53_record" "alb_record" {
 }
 
 resource "aws_route53_record" "www_record" {
-  zone_id = aws_route53_zone.main.zone_id
+  zone_id = aws_route53_zone.nextgen_hosted_zone.zone_id
   name    = "www.nextgenz.click"
   type    = "CNAME"
   ttl     = 300
@@ -22,7 +22,7 @@ resource "aws_route53_record" "www_record" {
 }
 
 resource "aws_route53_record" "CertificateManagerRecord" {
-  zone_id = aws_route53_zone.main.id
+  zone_id = aws_route53_zone.nextgen_hosted_zone.zone_id
   name = "_1d3e6eae8084f86ff591a98d2a51971b.nextgenz.click."
   type = "CNAME"
   ttl = 300
