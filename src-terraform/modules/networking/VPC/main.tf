@@ -1,7 +1,7 @@
 # VPC MAIN
 resource "aws_vpc" "main_vpc" {
-  cidr_block = var.vpc_cidr
-  enable_dns_support = true
+  cidr_block           = var.vpc_cidr
+  enable_dns_support   = true
   enable_dns_hostnames = true
 
   tags = {
@@ -11,9 +11,9 @@ resource "aws_vpc" "main_vpc" {
 
 # SUBNETS PUBLICAS
 resource "aws_subnet" "pub1a" {
-  vpc_id            = aws_vpc.main_vpc.id
-  availability_zone = var.us-east-1a
-  cidr_block        = var.subnet_pub1a_cidr
+  vpc_id                  = aws_vpc.main_vpc.id
+  availability_zone       = var.us-east-1a
+  cidr_block              = var.subnet_pub1a_cidr
   map_public_ip_on_launch = true
 
   tags = {
@@ -22,9 +22,9 @@ resource "aws_subnet" "pub1a" {
 }
 
 resource "aws_subnet" "pub1b" {
-  vpc_id            = aws_vpc.main_vpc.id
-  availability_zone = var.us-east-1b
-  cidr_block        = var.subnet_pub1b_cidr
+  vpc_id                  = aws_vpc.main_vpc.id
+  availability_zone       = var.us-east-1b
+  cidr_block              = var.subnet_pub1b_cidr
   map_public_ip_on_launch = true
 
   tags = {
@@ -34,9 +34,9 @@ resource "aws_subnet" "pub1b" {
 
 # SUBNETS PRIVADAS
 resource "aws_subnet" "priv1a" {
-  vpc_id            = aws_vpc.main_vpc.id
-  availability_zone = var.us-east-1a
-  cidr_block        = var.subnet_priv1a_cidr
+  vpc_id                  = aws_vpc.main_vpc.id
+  availability_zone       = var.us-east-1a
+  cidr_block              = var.subnet_priv1a_cidr
   map_public_ip_on_launch = true
 
   tags = {
@@ -45,9 +45,9 @@ resource "aws_subnet" "priv1a" {
 }
 
 resource "aws_subnet" "priv1b" {
-  vpc_id            = aws_vpc.main_vpc.id
-  availability_zone = var.us-east-1b
-  cidr_block        = var.subnet_priv1b_cidr
+  vpc_id                  = aws_vpc.main_vpc.id
+  availability_zone       = var.us-east-1b
+  cidr_block              = var.subnet_priv1b_cidr
   map_public_ip_on_launch = true
 
   tags = {
@@ -221,3 +221,55 @@ resource "aws_security_group_rule" "mysql_rds_sg" {
   security_group_id        = aws_security_group.rds_sg.id
   depends_on               = [aws_security_group.alb_sg, aws_security_group.ecs_sg, aws_security_group.rds_sg]
 }
+
+# # Network ACL
+# resource "aws_network_acl" "public_nacl" {
+#   vpc_id = aws_vpc.main_vpc.id
+
+#   # Regras de Entrada (Ingress)
+#   ingress {
+#     rule_no    = 100
+#     protocol   = "tcp"
+#     action     = "allow"
+#     cidr_block = "0.0.0.0/0"
+#     from_port  = 80
+#     to_port    = 80
+#   }
+
+#   ingress {
+#     rule_no    = 110
+#     protocol   = "tcp"
+#     action     = "allow"
+#     cidr_block = "0.0.0.0/0"
+#     from_port  = 443
+#     to_port    = 443
+#   }
+
+#   ingress {
+#     rule_no    = 120
+#     protocol   = "tcp"
+#     action     = "allow"
+#     cidr_block = "0.0.0.0/0"
+#     from_port  = 3306
+#     to_port    = 3306
+#   }
+
+#   # Regras de Saída (Egress)
+#   egress {
+#     rule_no    = 100
+#     protocol   = "-1"
+#     action     = "allow"
+#     cidr_block = "0.0.0.0/0"
+#   }
+# }
+
+# # Associar a NACL às Sub-redes Públicas
+# resource "aws_network_acl_association" "public_subnet_a" {
+#   subnet_id      = aws_subnet.pub1a.id
+#   network_acl_id = aws_network_acl.public_nacl.id
+# }
+
+# resource "aws_network_acl_association" "public_subnet_b" {
+#   subnet_id      = aws_subnet.pub1b.id
+#   network_acl_id = aws_network_acl.public_nacl.id
+# }

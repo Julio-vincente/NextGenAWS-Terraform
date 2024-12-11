@@ -44,3 +44,7 @@ variable "rds_username" {
 variable "rds_password" {
   type = string
 }
+
+variable "ecs_log_group" {
+  type = string
+}

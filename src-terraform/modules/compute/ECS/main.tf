@@ -19,11 +19,11 @@ resource "aws_ecs_task_definition" "service_prod" {
   execution_role_arn       = var.execution_role_arn
 
   container_definitions = jsonencode([{
-    name        = "task_app"
-    image       = "209479292626.dkr.ecr.us-east-1.amazonaws.com/teste:latest"
-    cpu         = 256
-    memory      = 512
-    essential   = true
+    name      = "task_app"
+    image     = "aaaaaaaa"
+    cpu       = 256
+    memory    = 512
+    essential = true
     portMappings = [
       {
         containerPort = 80
@@ -31,28 +31,37 @@ resource "aws_ecs_task_definition" "service_prod" {
         protocol      = "tcp"
       }
     ]
-    enviroment = [
+    environment = [
       {
-        name = "DB_HOST"
+        name  = "DB_HOST"
         value = var.rds_endpoint
       },
 
       {
-        name = "DB_USER"
+        name  = "DB_USER"
         value = var.rds_username
 
       },
 
       {
-        name = "DB_PASSWORD"
+        name  = "DB_PASSWORD"
         value = var.rds_password
       },
 
       {
-        name = "DB_NAME"
+        name  = "DB_NAME"
         value = "library"
       }
     ]
+
+    logConfiguration = {
+      logDriver = "awslogs"
+      options = {
+        "awslogs-group"         = var.ecs_log_group
+        "awslogs-region"        = "us-east-1"
+        "awslogs-stream-prefix" = "ecs"
+      }
+    }
   }])
 
   depends_on = [aws_ecs_cluster.cluster_ecs]
@@ -65,11 +74,11 @@ resource "aws_ecs_service" "ecs_service" {
   cluster         = aws_ecs_cluster.cluster_ecs.id
   task_definition = aws_ecs_task_definition.service_prod.arn
   launch_type     = "FARGATE"
-  desired_count = 1
+  desired_count   = 1
 
   network_configuration {
-    subnets         = var.subnet_public_ids
-    security_groups = [var.sg_ecs_id]
+    subnets          = var.subnet_public_ids
+    security_groups  = [var.sg_ecs_id]
     assign_public_ip = true
   }
 
@@ -79,5 +88,5 @@ resource "aws_ecs_service" "ecs_service" {
     container_port   = 80
   }
 
-  depends_on = [ aws_ecs_task_definition.service_prod ]
+  depends_on = [aws_ecs_task_definition.service_prod]
 }

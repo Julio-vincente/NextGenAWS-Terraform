@@ -1,0 +1,40 @@
+{
+    "name": "task_app",
+    "image": "209479292626.dkr.ecr.us-east-1.amazonaws.com/teste:latest",
+    "cpu": 256,
+    "memory": 512,
+    "essential": true,
+    "portMappings" : [
+      {
+        "containerPort": 80,
+        "hostPort": 80,
+        "protocol": "tcp"
+      }
+    ],
+    "environment": [
+      {
+          "name": "DB_NAME",
+          "value": "afdafdfaf"
+      },
+      {
+          "name": "DB_HOST",
+          "value": "asasadadsadadasd"
+      },
+      {
+          "name": "DB_USER",
+          "value": "dafdsfasdfas"
+      },
+      {
+          "name": "DB_PASSWORD",
+          "value": "fadfadfaf"
+      }
+  ],
+  "logConfiguration": {
+    "logDriver": "awslogs",
+    "option": {
+      "awslogs-group": "var.ecs_log_group",
+      "awslogs-region": "us-east-1",
+      "awslogs-stream-prefix": "ecs"
+    }
+  }
+}

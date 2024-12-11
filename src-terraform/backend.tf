@@ -52,6 +52,7 @@ module "ECS" {
   rds_endpoint = module.RDS.rds_endpoint
   rds_username = module.SecretsManager.rds_username
   rds_password = module.SecretsManager.rds_password
+  ecs_log_group = module.CloudWatch.ecs_log_group
 
   depends_on = [ module.ALB, module.VPC, module.IAM ]
 }

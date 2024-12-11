@@ -13,3 +13,8 @@ resource "aws_cloudwatch_metric_alarm" "high_cpu" {
     ClusterName = var.cluster_name
   }
 }
+
+resource "aws_cloudwatch_log_group" "ecs_log_group" {
+  name              = "/ecs/task-logs"
+  retention_in_days = 7
+}
