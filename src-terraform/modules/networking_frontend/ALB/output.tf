@@ -4,8 +4,8 @@ output "target_group_arn" {
 }
 
 output "alb_arn" {
-    description = "alb arn"
-    value = aws_lb.flask_alb.arn
+  description = "alb arn"
+  value       = aws_lb.flask_alb.arn
 }
 
 output "alb_dns_name" {

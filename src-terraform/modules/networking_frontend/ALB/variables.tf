@@ -1,10 +1,10 @@
 variable "alb_name" {
-  type = string
+  type    = string
   default = "AlbApp"
 }
 
 variable "target_name" {
-  type = string
+  type    = string
   default = "TargetAppFlask"
 }
 

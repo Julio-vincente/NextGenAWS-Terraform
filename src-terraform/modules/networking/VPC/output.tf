@@ -15,10 +15,10 @@ output "sg_alb_id" {
 
 output "sg_db_id" {
   description = "sg rds id"
-  value = aws_security_group.rds_sg.id
+  value       = aws_security_group.rds_sg.id
 }
 
 output "vpc_id" {
   description = "vpc_prod_id"
-  value = aws_vpc.main_vpc.id
+  value       = aws_vpc.main_vpc.id
 }

@@ -9,7 +9,7 @@ module "VPC" {
 
 # Modulo IAM
 module "IAM" {
-  source = "./modules/security/IAM"
+  source     = "./modules/security/IAM"
   secret_arn = module.SecretsManager.secret_arn
   bucket_arn = module.S3.bucket_arn
 }
@@ -25,15 +25,8 @@ module "ALB" {
   public_subnet_ids = module.VPC.public_subnet_ids
   sg_alb_id         = module.VPC.sg_alb_id
   vpc_id            = module.VPC.vpc_id
-  certificate_arn = module.CertificateManager.certificate_arn
-  depends_on = [ module.VPC ]
-}
-
-# Modulo Route53
-module "Route53" {
-  source = "./modules/networking_frontend/Route53"
-  alb_zone_id = module.ALB.alb_zone_id
-  alb_dns_name = module.ALB.alb_dns_name
+  certificate_arn   = module.CertificateManager.certificate_arn
+  depends_on        = [module.VPC]
 }
 
 # Modulo ECR
@@ -49,26 +42,26 @@ module "ECS" {
   subnet_public_ids  = module.VPC.public_subnet_ids
   sg_ecs_id          = module.VPC.sg_ecs_id
   target_group_arn   = module.ALB.target_group_arn
-  rds_endpoint = module.RDS.rds_endpoint
-  rds_username = module.SecretsManager.rds_username
-  rds_password = module.SecretsManager.rds_password
-  ecs_log_group = module.CloudWatch.ecs_log_group
+  rds_endpoint       = module.RDS.rds_endpoint
+  rds_username       = module.SecretsManager.rds_username
+  rds_password       = module.SecretsManager.rds_password
+  ecs_log_group      = module.CloudWatch.ecs_log_group
 
-  depends_on = [ module.ALB, module.VPC, module.IAM ]
+  depends_on = [module.ALB, module.VPC, module.IAM]
 }
 
 # Modulo AutoScaling
 module "AutoScaling" {
-  source = "./modules/compute/AutoScaling"
+  source       = "./modules/compute/AutoScaling"
   cluster_name = module.ECS.cluster_name
   service_name = module.ECS.service_name
 }
 
 # Modulo WAF
 module "WAF" {
-  source = "./modules/security/WAF"
-  alb_arn = module.ALB.alb_arn
-  depends_on = [ module.ALB ]
+  source     = "./modules/security/WAF"
+  alb_arn    = module.ALB.alb_arn
+  depends_on = [module.ALB]
 }
 
 # Modulo Secrets Manager
@@ -78,18 +71,18 @@ module "SecretsManager" {
 
 # Modulo RDS
 module "RDS" {
-  source = "./modules/database/RDS"
-  sg_db_id = module.VPC.sg_db_id
+  source            = "./modules/database/RDS"
+  sg_db_id          = module.VPC.sg_db_id
   public_subnet_ids = module.VPC.public_subnet_ids
-  rds_username = module.SecretsManager.rds_username
-  rds_password = module.SecretsManager.rds_password
+  rds_username      = module.SecretsManager.rds_username
+  rds_password      = module.SecretsManager.rds_password
 
-  depends_on = [ module.SecretsManager, module.VPC ]
+  depends_on = [module.SecretsManager, module.VPC]
 }
 
 # Modulo CloudWatch
 module "CloudWatch" {
-  source = "./modules/monitoring/CloudWatch"
+  source       = "./modules/monitoring/CloudWatch"
   cluster_name = module.ECS.cluster_name
   service_name = module.ECS.service_name
   scale_up_arn = module.AutoScaling.scale_up_arn
@@ -98,4 +91,20 @@ module "CloudWatch" {
 # Modulo S3
 module "S3" {
   source = "./modules/storage/S3"
+}
+
+# CloudFront
+module "CloudFront" {
+  source          = "./modules/networking_frontend/CloudFront"
+  alb_dns_name    = module.ALB.alb_dns_name
+  certificate_arn = module.CertificateManager.certificate_arn
+}
+
+# Modulo Route53
+module "Route53" {
+  source                     = "./modules/networking_frontend/Route53"
+  alb_zone_id                = module.ALB.alb_zone_id
+  alb_dns_name               = module.ALB.alb_dns_name
+  cloud_front_hosted_zone_id = module.CloudFront.cloud_front_hosted_zone_id
+  cloud_front_domain_name    = module.CloudFront.cloud_front_domain_name
 }

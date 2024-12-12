@@ -9,8 +9,8 @@ resource "aws_db_instance" "library_database" {
   skip_final_snapshot    = true
   publicly_accessible    = true
   parameter_group_name   = aws_db_parameter_group.parameter_group.name
-  db_subnet_group_name   = aws_db_subnet_group.subnet_group.name 
-  vpc_security_group_ids = [var.sg_db_id]       
+  db_subnet_group_name   = aws_db_subnet_group.subnet_group.name
+  vpc_security_group_ids = [var.sg_db_id]
 }
 
 resource "aws_db_parameter_group" "parameter_group" {
