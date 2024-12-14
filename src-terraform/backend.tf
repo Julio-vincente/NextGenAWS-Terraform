@@ -12,6 +12,7 @@ module "IAM" {
   source     = "./modules/security/IAM"
   secret_arn = module.SecretsManager.secret_arn
   bucket_arn = module.S3.bucket_arn
+  guardyduty_log_group = module.CloudWatch.guardyduty_log_group
 }
 
 # Modulo ACM
@@ -99,3 +100,4 @@ module "Route53" {
   alb_zone_id                = module.ALB.alb_zone_id
   alb_dns_name               = module.ALB.alb_dns_name
 }
+

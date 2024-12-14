@@ -9,3 +9,8 @@ variable "service_name" {
 variable "scale_up_arn" {
   type = string
 }
+
+variable "region" {
+  type = string
+  default = "us-east-1"
+}

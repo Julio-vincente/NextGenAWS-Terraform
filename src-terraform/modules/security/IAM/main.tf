@@ -86,3 +86,37 @@ resource "aws_iam_role" "autoscaling_role" {
     ]
   })
 }
+
+# CloudWatch role
+resource "aws_iam_role" "cloudwatch_event_role" {
+  name = "cloudwatch-event-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action    = "sts:AssumeRole"
+        Effect    = "Allow"
+        Principal = {
+          Service = "events.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+# CloudWatch policy
+resource "aws_iam_role_policy" "cloudwatch_event_policy" {
+  name   = "cloudwatch-event-policy"
+  role   = aws_iam_role.cloudwatch_event_role.name
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action   = "logs:PutLogEvents"
+        Effect   = "Allow"
+        Resource = "${var.guardyduty_log_group}:*"
+      }
+    ]
+  })
+}

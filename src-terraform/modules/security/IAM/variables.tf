@@ -5,3 +5,7 @@ variable "secret_arn" {
 variable "bucket_arn" {
   type = string
 }
+
+variable "guardyduty_log_group" {
+  type = string
+}
