@@ -48,18 +48,6 @@ resource "aws_iam_policy" "ecs_task_role" {
           "secretsmanager:GetSecretValue"
         ],
         Resource = var.secret_arn
-      },
-      {
-        Effect   = "Allow"
-        Action   = [
-          "s3:GetObject",
-          "s3:PutObject",
-          "s3:ListObject"
-        ]
-        Resource = [
-          "${var.bucket_arn}/*",
-          var.bucket_arn
-        ]
       }
     ]
   })
