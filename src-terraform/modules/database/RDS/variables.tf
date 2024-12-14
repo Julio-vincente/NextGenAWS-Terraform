@@ -14,11 +14,6 @@ variable "rds_password" {
   type = string
 }
 
-variable "db_name" {
-  type    = string
-  default = "library"
-}
-
 variable "allocated_storage" {
   type        = string
   default     = 10

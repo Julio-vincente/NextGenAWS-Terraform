@@ -1,18 +1,3 @@
-variable "cluster_name" {
-  type    = string
-  default = "ProdCluster"
-}
-
-variable "task_family" {
-  type    = string
-  default = "service"
-}
-
-variable "service_name" {
-  type    = string
-  default = "service_app"
-}
-
 variable "task_role_arn" {
   type = string
 }

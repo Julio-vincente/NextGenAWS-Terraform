@@ -1,11 +1,11 @@
 # VPC MAIN
 resource "aws_vpc" "main_vpc" {
-  cidr_block           = var.vpc_cidr
+  cidr_block           = "192.168.0.0/16"
   enable_dns_support   = true
   enable_dns_hostnames = true
 
   tags = {
-    Name = var.vpc_name
+    Name = "vpc_main"
   }
 }
 
@@ -13,22 +13,22 @@ resource "aws_vpc" "main_vpc" {
 resource "aws_subnet" "pub1a" {
   vpc_id                  = aws_vpc.main_vpc.id
   availability_zone       = var.us-east-1a
-  cidr_block              = var.subnet_pub1a_cidr
+  cidr_block              = "192.168.10.0/24"
   map_public_ip_on_launch = true
 
   tags = {
-    Name = var.subnet_pub1a_name
+    Name = "sub_pub_1a"
   }
 }
 
 resource "aws_subnet" "pub1b" {
   vpc_id                  = aws_vpc.main_vpc.id
   availability_zone       = var.us-east-1b
-  cidr_block              = var.subnet_pub1b_cidr
+  cidr_block              = "192.168.20.0/24"
   map_public_ip_on_launch = true
 
   tags = {
-    Name = var.subnet_pub1b_name
+    Name = "sub_pub_1b"
   }
 }
 
@@ -36,22 +36,22 @@ resource "aws_subnet" "pub1b" {
 resource "aws_subnet" "priv1a" {
   vpc_id                  = aws_vpc.main_vpc.id
   availability_zone       = var.us-east-1a
-  cidr_block              = var.subnet_priv1a_cidr
+  cidr_block              = "192.168.30.0/24"
   map_public_ip_on_launch = true
 
   tags = {
-    Name = var.subnet_priv1a_name
+    Name = "sub_priv_1a"
   }
 }
 
 resource "aws_subnet" "priv1b" {
   vpc_id                  = aws_vpc.main_vpc.id
   availability_zone       = var.us-east-1b
-  cidr_block              = var.subnet_priv1b_cidr
+  cidr_block              = "192.168.40.0/24"
   map_public_ip_on_launch = true
 
   tags = {
-    Name = var.subnet_priv1b_name
+    Name = "sub_priv_1b"
   }
 }
 
@@ -60,7 +60,7 @@ resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main_vpc.id
 
   tags = {
-    Name = var.igw_prod
+    Name = "igw_prod"
   }
 }
 
@@ -72,7 +72,7 @@ resource "aws_nat_gateway" "nat_gw" {
   allocation_id = aws_eip.elastic_ip.id
 
   tags = {
-    Name = var.natgw_name
+    Name = "natgw_prod"
   }
 }
 
@@ -219,6 +219,16 @@ resource "aws_security_group_rule" "mysql_rds_sg" {
   protocol                 = "tcp"
   source_security_group_id = aws_security_group.ecs_sg.id
   security_group_id        = aws_security_group.rds_sg.id
+  depends_on               = [aws_security_group.alb_sg, aws_security_group.ecs_sg, aws_security_group.rds_sg]
+}
+
+resource "aws_security_group_rule" "mysql_alb_sg" {
+  type                     = "ingress"
+  from_port                = 3306
+  to_port                  = 3306
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.rds_sg.id
+  security_group_id        = aws_security_group.alb_sg.id
   depends_on               = [aws_security_group.alb_sg, aws_security_group.ecs_sg, aws_security_group.rds_sg]
 }
 

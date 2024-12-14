@@ -1,5 +1,5 @@
-output "rds_endpoint" {
-  value = aws_db_instance.library_database.endpoint
+output "rds_endpoint_clean" {
+  value = element(split(":", aws_db_instance.library_database.endpoint), 0)
 }
 
 output "rds_name" {

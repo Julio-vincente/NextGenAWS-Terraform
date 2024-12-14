@@ -42,7 +42,7 @@ module "ECS" {
   subnet_public_ids  = module.VPC.public_subnet_ids
   sg_ecs_id          = module.VPC.sg_ecs_id
   target_group_arn   = module.ALB.target_group_arn
-  rds_endpoint       = module.RDS.rds_endpoint
+  rds_endpoint       = module.RDS.rds_endpoint_clean
   rds_username       = module.SecretsManager.rds_username
   rds_password       = module.SecretsManager.rds_password
   ecs_log_group      = module.CloudWatch.ecs_log_group
@@ -93,18 +93,9 @@ module "S3" {
   source = "./modules/storage/S3"
 }
 
-# CloudFront
-module "CloudFront" {
-  source          = "./modules/networking_frontend/CloudFront"
-  alb_dns_name    = module.ALB.alb_dns_name
-  certificate_arn = module.CertificateManager.certificate_arn
-}
-
 # Modulo Route53
 module "Route53" {
   source                     = "./modules/networking_frontend/Route53"
   alb_zone_id                = module.ALB.alb_zone_id
   alb_dns_name               = module.ALB.alb_dns_name
-  cloud_front_hosted_zone_id = module.CloudFront.cloud_front_hosted_zone_id
-  cloud_front_domain_name    = module.CloudFront.cloud_front_domain_name
 }

@@ -1,6 +1,6 @@
 # ECS Cluster
 resource "aws_ecs_cluster" "cluster_ecs" {
-  name = var.cluster_name
+  name = "ProdCluster"
 
   setting {
     name  = "containerInsights"
@@ -10,7 +10,7 @@ resource "aws_ecs_cluster" "cluster_ecs" {
 
 # ECS Task Definition
 resource "aws_ecs_task_definition" "service_prod" {
-  family                   = var.task_family
+  family                   = "ProdCluster"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = "256"
@@ -19,8 +19,8 @@ resource "aws_ecs_task_definition" "service_prod" {
   execution_role_arn       = var.execution_role_arn
 
   container_definitions = jsonencode([{
-    name      = "task_app"
-    image     = "aaaaaaaa"
+    name      = "sleep360" 
+    image     = "209479292626.dkr.ecr.us-east-1.amazonaws.com/teste:latest"
     cpu       = 256
     memory    = 512
     essential = true
@@ -36,18 +36,14 @@ resource "aws_ecs_task_definition" "service_prod" {
         name  = "DB_HOST"
         value = var.rds_endpoint
       },
-
       {
         name  = "DB_USER"
         value = var.rds_username
-
       },
-
       {
         name  = "DB_PASSWORD"
         value = var.rds_password
       },
-
       {
         name  = "DB_NAME"
         value = "library"
@@ -67,10 +63,9 @@ resource "aws_ecs_task_definition" "service_prod" {
   depends_on = [aws_ecs_cluster.cluster_ecs]
 }
 
-
 # ECS Service
 resource "aws_ecs_service" "ecs_service" {
-  name            = var.service_name
+  name            = "ProdCluster"
   cluster         = aws_ecs_cluster.cluster_ecs.id
   task_definition = aws_ecs_task_definition.service_prod.arn
   launch_type     = "FARGATE"
@@ -84,7 +79,7 @@ resource "aws_ecs_service" "ecs_service" {
 
   load_balancer {
     target_group_arn = var.target_group_arn
-    container_name   = "task_app"
+    container_name   = "sleep360"
     container_port   = 80
   }
 

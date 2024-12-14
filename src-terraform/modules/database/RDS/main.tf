@@ -1,6 +1,6 @@
 resource "aws_db_instance" "library_database" {
   allocated_storage      = var.allocated_storage
-  db_name                = var.db_name
+  db_name                = "library"
   engine                 = "mysql"
   engine_version         = "8.0"
   instance_class         = "db.t3.micro"
