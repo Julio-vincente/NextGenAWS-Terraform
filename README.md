@@ -1,6 +1,6 @@
 # Terraform Modules
 
-| AWS        |
+| Terraform        |
 |------------|
 | <p align="center"><img src="https://github.com/devicons/devicon/blob/master/icons/terraform/terraform-original.svg" alt="Terraform Logo" title="ntopng" alt="ntopng" width="55" height="55"></p> |
 
