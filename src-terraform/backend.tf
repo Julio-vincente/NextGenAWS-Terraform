@@ -11,7 +11,6 @@ module "VPC" {
 module "IAM" {
   source     = "./modules/security/IAM"
   secret_arn = module.SecretsManager.secret_arn
-  bucket_arn = module.S3.bucket_arn
   guardyduty_log_group = module.CloudWatch.guardyduty_log_group
 }
 
@@ -65,7 +64,7 @@ module "WAF" {
   depends_on = [module.ALB]
 }
 
-# Modulo Secrets Manager
+# Modulo SecretsManager
 module "SecretsManager" {
   source = "./modules/security/SecretsManager"
 }
@@ -87,11 +86,6 @@ module "CloudWatch" {
   cluster_name = module.ECS.cluster_name
   service_name = module.ECS.service_name
   scale_up_arn = module.AutoScaling.scale_up_arn
-}
-
-# Modulo S3
-module "S3" {
-  source = "./modules/storage/S3"
 }
 
 # Modulo Route53
