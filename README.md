@@ -1,8 +1,8 @@
 # Terraform Modules
 
-| Terraform        |
+| AWS        |
 |------------|
-| <p align="center"><img src="https://github.com/devicons/devicon/blob/master/icons/terraform/terraform-original.svg" title="ntopng" alt="ntopng" width="55" height="55" |
+| <p align="center"><img src="https://github.com/devicons/devicon/blob/master/icons/terraform/terraform-original.svg" alt="Terraform Logo" title="ntopng" alt="ntopng" width="55" height="55"></p> |
 
 
 Este repositório contém módulos do Terraform para facilitar a automação e o gerenciamento de recursos na AWS. Cada módulo é projetado para ser reutilizável, configurável e fácil de implementar, com foco na segurança, escalabilidade e boas práticas.
