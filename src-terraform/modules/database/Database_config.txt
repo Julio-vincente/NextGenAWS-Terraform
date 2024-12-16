@@ -1,13 +1,37 @@
+-- Criação do banco de dados
 CREATE DATABASE library;
 
+-- Selecionar o banco de dados
 USE library;
 
-CREATE TABLE authors (id INTEGER PRIMARY KEY, name TEXT);
-CREATE TABLE books (id INTEGER PRIMARY KEY, title TEXT, author_name VARCHAR (50));    
+-- Criação da tabela authors
+CREATE TABLE authors (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT, -- Gerar automaticamente o ID
+    name TEXT NOT NULL                     -- Nome do autor
+);
 
-INSERT INTO authors (id, name) VALUES (1, 'Raphael Montes');
-INSERT INTO authors (id, name) VALUES (2, 'Colleen Hoover');
-INSERT INTO books (id, title, author_name) VALUES (1, 'Jantar Secreto', 'Raphael Montes');
-INSERT INTO books (id, title, author_name) VALUES (2, 'É assim que começa', 'Colleen Hoover');
-INSERT INTO books (id, title, author_name) VALUES (3, 'É assim que acaba', 'Colleen Hoover');
-INSERT INTO books (id, title, author_name) VALUES (4, 'Suicidas', 'Raphael Montes');
+-- Criação da tabela books
+CREATE TABLE books (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT, -- Gerar automaticamente o ID
+    title TEXT NOT NULL,                   -- Título do livro
+    author_id INTEGER NOT NULL,            -- Relacionamento com a tabela authors
+    FOREIGN KEY (author_id) REFERENCES authors (id) ON DELETE CASCADE -- Chave estrangeira
+);
+
+-- Inserir autores
+INSERT INTO authors (name) VALUES ('Raphael Montes');
+INSERT INTO authors (name) VALUES ('Colleen Hoover');
+
+-- Inserir livros
+INSERT INTO books (title, author_id) VALUES ('Jantar Secreto', 1);
+INSERT INTO books (title, author_id) VALUES ('É assim que começa', 2);
+INSERT INTO books (title, author_id) VALUES ('É assim que acaba', 2);
+INSERT INTO books (title, author_id) VALUES ('Suicidas', 1);
+
+-- Consulta para exibir os livros com os nomes dos autores
+SELECT 
+    books.id AS book_id,
+    books.title AS book_title,
+    authors.name AS author_name
+FROM books
+JOIN authors ON books.author_id = authors.id;
