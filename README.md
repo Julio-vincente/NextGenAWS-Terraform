@@ -14,6 +14,14 @@ Este repositório contém módulos do Terraform para facilitar a automação e o
 - [Pré-requisitos](#pré-requisitos)
 - [Como Usar](#como-usar)
 
+## Sobre os Integrantes 
+| Nome | GitHub | Social |
+| ---| ---| ---|
+| Julio Vicente | [GitHub](https://github.com/Julio-vincente) | [LinkedIn](https://www.linkedin.com/in/julio-vicente-b08239276/) |
+| Flavio Martins | [GitHub](https://github.com/Flaviomartinx) | [LinkedIn](https://www.linkedin.com/in/flavio-martins-mendes) |
+| Guilherme do Carmo | [GitHub](https://github.com/GuiROC1) | [LinkedIn](https://www.linkedin.com/in/guilherme-r-carmo/) |
+| Maria Oliveira | - | [LinkedIn](https://www.linkedin.com/in/maria-oliveiraa67) |
+
 ## Visão Geral
 
 Este repositório é dedicado ao gerenciamento de infraestrutura utilizando o Terraform, com foco principalmente em serviços da AWS como ECS, RDS, VPC, ACM e Route 53. Os módulos são criados para automatizar tarefas repetitivas e garantir que a infraestrutura seja configurada de maneira eficiente, com base em boas práticas.
